@@ -1,6 +1,8 @@
 "use client";
 
+import { Message } from "@/typings";
 import { FormEvent, useState } from "react";
+import { v4 as uuid } from "uuid";
 
 type Props = {};
 
@@ -13,6 +15,17 @@ const ChatInput = (props: Props) => {
 
     const messageToSend = input;
     setInput("");
+
+    const id = uuid();
+
+    const message: Message = {
+      id,
+      message: messageToSend,
+      created_at: Date.now(),
+      username: "Allah",
+      profilePic: "/meta.png",
+      email: "chiriac_razvan@ymail.com ",
+    };
   };
 
   return (
