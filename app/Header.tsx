@@ -6,11 +6,11 @@ import LogoutButton from "./LogoutButton";
 type Props = {};
 
 const Header = (props: Props) => {
-  const session = true;
+  const session = false;
 
   if (session)
     return (
-      <header className="sticky top-0 z-50 bg-white flex justify-center items-center p-10 shadow-sm">
+      <header className="sticky top-0 z-50 bg-white flex justify-between items-center p-10 shadow-sm">
         <div className="flex space-x-2">
           <Image
             className="rounded-full mx-2 object-contain"
@@ -25,6 +25,8 @@ const Header = (props: Props) => {
             <p className="font-bold text-lg">Facebook Name</p>
           </div>
         </div>
+
+        <LogoutButton />
       </header>
     );
 
@@ -44,8 +46,6 @@ const Header = (props: Props) => {
           Sign In
         </Link>
       </div>
-
-      <LogoutButton />
     </header>
   );
 };
