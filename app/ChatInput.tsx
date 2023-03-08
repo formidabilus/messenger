@@ -26,6 +26,20 @@ const ChatInput = (props: Props) => {
       profilePic: "/meta.png",
       email: "chiriac_razvan@ymail.com ",
     };
+
+    const uploadMessageToUpstash = async () => {
+      const res = await fetch("/api/add-message", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ message }),
+      });
+
+      const data = await res.json();
+      console.log("message: ", data);
+    };
+    uploadMessageToUpstash();
   };
 
   return (
