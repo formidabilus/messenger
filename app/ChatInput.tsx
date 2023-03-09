@@ -2,12 +2,14 @@
 
 import { Message } from "@/typings";
 import { FormEvent, useState } from "react";
+import useSWR from "swr";
 import { v4 as uuid } from "uuid";
 
 type Props = {};
 
 const ChatInput = (props: Props) => {
   const [input, setInput] = useState("");
+  const { data, error, mutate } = useSWR("/api/get-messages", fetcher);
 
   const addMessage = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
