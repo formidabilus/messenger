@@ -1,3 +1,4 @@
+import { serverPusher } from "@/pusher";
 import { Message } from "@/typings";
 import { NextResponse } from "next/server";
 import redis from "../../../redis";
@@ -15,6 +16,7 @@ export async function POST(req: Request) {
   };
 
   await redis.hset("messages", message.id, JSON.stringify(newMessage));
+  serverPusher.trigger("messages", "new-message", newMessage);
 
   return NextResponse.json({ message: newMessage });
 }
