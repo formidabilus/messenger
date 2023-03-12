@@ -1,5 +1,4 @@
 import { Message } from "@/typings";
-import { Inter } from "next/font/google";
 import ChatInput from "./ChatInput";
 import MessageList from "./MessageList";
 import styles from "./page.module.css";

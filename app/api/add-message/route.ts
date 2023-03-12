@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   };
 
   await redis.hset("messages", message.id, JSON.stringify(newMessage));
-  serverPusher.trigger("messages", "new-message", newMessage);
+  await serverPusher.trigger("messages", "new-message", newMessage);
 
   return NextResponse.json({ message: newMessage });
 }
