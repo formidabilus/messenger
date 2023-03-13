@@ -5,10 +5,13 @@ import fetcher from "@/utils/fetchMessages";
 import { FormEvent, useState } from "react";
 import useSWR from "swr";
 import { v4 as uuid } from "uuid";
+import { getServerSession } from "next-auth";
 
-type Props = {};
+type Props = {
+  session: Awaited<ReturnType<typeof getServerSession>>;
+};
 
-const ChatInput = (props: Props) => {
+const ChatInput = ({ session }: Props) => {
   const [input, setInput] = useState("");
   const {
     data: messages,
@@ -18,9 +21,10 @@ const ChatInput = (props: Props) => {
 
   const addMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!input) return;
+    if (!session || !input) return;
 
     const messageToSend = input;
+
     setInput("");
 
     const id = uuid();
@@ -29,9 +33,9 @@ const ChatInput = (props: Props) => {
       id,
       message: messageToSend,
       created_at: Date.now(),
-      username: "Allah",
-      profilePic: "/meta.png",
-      email: "chiriac_razvan@ymail.com ",
+      username: session?.user?.name!,
+      profilePic: session?.user?.image!,
+      email: session?.user?.email!,
     };
 
     const uploadMessageToUpstash = async () => {
@@ -61,6 +65,7 @@ const ChatInput = (props: Props) => {
       <input
         type="text"
         value={input}
+        disabled={!session}
         onChange={(e) => setInput(e.target.value)}
         autoComplete="off"
         name="input"

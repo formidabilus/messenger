@@ -1,13 +1,14 @@
+import { getServerSession } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import LogoutButton from "./LogoutButton";
 
-type Props = {};
-
-const Header = (props: Props) => {
-  const session = false;
-
+type Props = {
+  session: Awaited<ReturnType<typeof getServerSession>>;
+};
+const Header = ({ session }: Props) => {
+  console.log(session);
   if (session)
     return (
       <header className="sticky top-0 z-50 bg-white flex justify-between items-center p-10 shadow-sm">
@@ -16,13 +17,13 @@ const Header = (props: Props) => {
             className="rounded-full mx-2 object-contain"
             height={10}
             width={50}
-            src=""
+            src={session.user?.image!}
             alt="Profile"
           />
 
           <div>
             <p className="text-blue-400">Logged in as: </p>
-            <p className="font-bold text-lg">Facebook Name</p>
+            <p className="font-bold text-lg">{session.user?.name}</p>
           </div>
         </div>
 

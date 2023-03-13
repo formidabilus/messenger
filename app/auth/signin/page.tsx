@@ -2,12 +2,17 @@ import { getProviders } from "next-auth/react";
 import Image from "next/image";
 import SignInComponent from "./SignInComponent";
 
+export const metadata = {
+  title: "Sign in to Messenger",
+  description: "Sign in",
+};
+
 const SignInPage = async () => {
   const providers = await getProviders();
 
   console.log("page providers: ", providers);
   return (
-    <div>
+    <div className="grid justify-center">
       <div>
         <Image
           className="rounded-full mx2 object-cover"

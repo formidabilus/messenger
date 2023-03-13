@@ -2,6 +2,8 @@ import { Message } from "@/typings";
 import ChatInput from "./ChatInput";
 import MessageList from "./MessageList";
 import styles from "./page.module.css";
+import { getServerSession } from "next-auth";
+import { Providers } from "./providers";
 
 export default async function Home() {
   const data = await fetch(
@@ -9,11 +11,14 @@ export default async function Home() {
   ).then((res) => res.json());
 
   const messages: Message[] = data.messages;
+  const session = await getServerSession();
 
   return (
-    <main>
-      <MessageList initialMessages={messages} />
-      <ChatInput />
-    </main>
+    <Providers session={session}>
+      <main>
+        <MessageList initialMessages={messages} />
+        <ChatInput session={session} />
+      </main>
+    </Providers>
   );
 }
