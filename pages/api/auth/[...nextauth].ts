@@ -1,7 +1,12 @@
 import NextAuth from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import FacebookProvider from "next-auth/providers/facebook";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
+  session: {
+    strategy: "jwt",
+  },
+
   // Configure one or more authentication providers
   providers: [
     FacebookProvider({
@@ -11,7 +16,7 @@ export const authOptions = {
     // ...add more providers here
   ],
 
-  secret: process.env.NEXTAUTH_SECRET!,
+  secret: process.env.NEXTAUTH_SECRET,
 
   pages: {
     signIn: "/auth/signin",

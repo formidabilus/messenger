@@ -6,13 +6,18 @@ import { FormEvent, useState } from "react";
 import useSWR from "swr";
 import { v4 as uuid } from "uuid";
 import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
 
-type Props = {
-  session: Awaited<ReturnType<typeof getServerSession>>;
-};
+// type Props = {
+//   session: Awaited<ReturnType<typeof getServerSession>>;
+// };
 
-const ChatInput = ({ session }: Props) => {
+const ChatInput = () => {
   const [input, setInput] = useState("");
+  const { data: session } = useSession();
+
+  console.log("chatinput session: ", session);
+
   const {
     data: messages,
     error,
