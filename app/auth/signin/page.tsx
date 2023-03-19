@@ -10,7 +10,6 @@ export const metadata = {
 const SignInPage = async () => {
   const providers = await getProviders();
 
-  console.log("page providers: ", providers);
   return (
     <div className="grid justify-center">
       <div>

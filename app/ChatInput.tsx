@@ -5,12 +5,7 @@ import fetcher from "@/utils/fetchMessages";
 import { FormEvent, useState } from "react";
 import useSWR from "swr";
 import { v4 as uuid } from "uuid";
-import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
-
-// type Props = {
-//   session: Awaited<ReturnType<typeof getServerSession>>;
-// };
 
 const ChatInput = () => {
   const [input, setInput] = useState("");
@@ -26,7 +21,7 @@ const ChatInput = () => {
 
   const addMessage = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!session || !input) return;
+    if (!input || !session) return;
 
     const messageToSend = input;
 
@@ -36,8 +31,8 @@ const ChatInput = () => {
 
     const message: Message = {
       id,
-      message: messageToSend,
-      created_at: Date.now(),
+      message: messageToSend!,
+      created_at: Date?.now(),
       username: session?.user?.name!,
       profilePic: session?.user?.image!,
       email: session?.user?.email!,
@@ -53,12 +48,14 @@ const ChatInput = () => {
       });
 
       const data = await res.json();
-
-      return [data.message, ...messages!];
+      return [data.message, ...(messages as Message[])];
     };
+
     await mutate(uploadMessageToUpstash, {
-      optimisticData: [message, ...messages!],
+      optimisticData: [message, ...(messages as Message[])],
       rollbackOnError: true,
+      populateCache: true,
+      revalidate: false,
     });
   };
 

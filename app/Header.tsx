@@ -1,5 +1,4 @@
-import { authOptions } from "@/pages/api/auth/[...nextauth]";
-import { getServerSession, Session } from "next-auth";
+import { Session } from "next-auth";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -20,7 +19,7 @@ const Header = ({ session }: Props) => {
             className="rounded-full mx-2 object-contain"
             height={10}
             width={50}
-            src={session?.user?.image!}
+            src={session?.user?.image as string}
             alt="Profile"
           />
 

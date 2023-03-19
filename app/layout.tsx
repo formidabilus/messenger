@@ -1,5 +1,5 @@
 import { authOptions } from "../pages/api/auth/[...nextauth]";
-import { getServerSession } from "next-auth";
+import { getServerSession, Session } from "next-auth";
 import "./globals.css";
 import Header from "./Header";
 import { Providers } from "./providers";
@@ -19,9 +19,8 @@ export default async function RootLayout({
   console.log("session layout: ", session);
   return (
     <html lang="en">
-      <head />
       <body>
-        <Header session={session!} />
+        <Header session={session as Session} />
         <Providers>{children}</Providers>
       </body>
     </html>
