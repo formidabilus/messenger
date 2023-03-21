@@ -14,10 +14,10 @@ const SignInPage = async () => {
     <div className="grid justify-center">
       <div>
         <Image
-          className="rounded-full mx2 object-cover"
-          width={700}
-          height={700}
-          src="/meta.png"
+          className="my-12 mx-2 object-cover"
+          width={200}
+          height={200}
+          src="/facebook-messenger-logo.png"
           alt="Profile"
         />
       </div>
