@@ -40,12 +40,12 @@ const Header = ({ session }: Props) => {
           <p className="text-blue-400">Welcome to Meta Messenger</p>
         </div>
 
-        <Link
+        {/* <Link
           href="/auth/signin"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         >
           Sign In
-        </Link>
+        </Link> */}
       </div>
     </header>
   );
