@@ -9,8 +9,6 @@ type Props = {
 };
 
 const Header = ({ session }: Props) => {
-  console.log("header session: ", JSON.stringify(session));
-
   if (session)
     return (
       <header className="sticky top-0 z-50 bg-white flex justify-between items-center p-10 shadow-sm">

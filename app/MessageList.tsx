@@ -3,6 +3,7 @@
 import { clientPusher } from "@/pusher";
 import { Message } from "@/typings";
 import fetcher from "@/utils/fetchMessages";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import useSWR from "swr";
 import MessageComponent from "./MessageComponent";
@@ -16,9 +17,11 @@ const MessageList = ({ initialMessages }: Props) => {
     data: messages,
     error,
     mutate,
-  } = useSWR<Message[]>("/api/get-messages", fetcher, {
+  } = useSWR("/api/get-messages", fetcher, {
     revalidateOnFocus: false,
   });
+
+  const { data: session } = useSession();
 
   useEffect(() => {
     const channel = clientPusher.subscribe("messages");
@@ -29,7 +32,7 @@ const MessageList = ({ initialMessages }: Props) => {
         await mutate(fetcher);
       } else {
         await mutate(fetcher, {
-          optimisticData: [data, ...messages],
+          optimisticData: [data, ...(messages as Message[])],
           rollbackOnError: true,
           populateCache: true,
           revalidate: false,
@@ -38,17 +41,19 @@ const MessageList = ({ initialMessages }: Props) => {
     });
 
     return () => {
-      channel.unbind_all();
+      channel.unbind("new-message");
       channel.unsubscribe();
     };
   }, [messages, mutate]);
 
   return (
-    <div className="space-y-5 px5 pt-8 pb-32 max-w-2xl xl:max-w-4xl mx-auto">
-      {(messages || initialMessages).map((message) => (
-        <MessageComponent key={message?.id} message={message} />
-      ))}
-    </div>
+    session && (
+      <div className="space-y-5 px5 pt-8 pb-32 max-w-2xl xl:max-w-4xl mx-auto">
+        {(messages || initialMessages)?.map((message) => (
+          <MessageComponent key={message?.id} message={message} />
+        ))}
+      </div>
+    )
   );
 };
 

@@ -3,11 +3,13 @@ import { NextResponse } from "next/server";
 import redis from "../../../redis";
 
 type Data = {
-  message: Message;
+  messages: Message[];
 };
 
 export async function GET(req: Request) {
   const messagesRes = await redis.hvals("messages");
+
+  console.log("redis messages: ", messagesRes);
 
   const messages: Message[] = messagesRes
     .map((message) => JSON.parse(message))

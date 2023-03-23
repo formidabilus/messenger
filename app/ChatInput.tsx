@@ -11,8 +11,6 @@ const ChatInput = () => {
   const [input, setInput] = useState("");
   const { data: session } = useSession();
 
-  console.log("chatinput session: ", session);
-
   const {
     data: messages,
     error,
@@ -31,7 +29,7 @@ const ChatInput = () => {
 
     const message: Message = {
       id,
-      message: messageToSend!,
+      message: messageToSend,
       created_at: Date?.now(),
       username: session?.user?.name!,
       profilePic: session?.user?.image!,
@@ -39,24 +37,27 @@ const ChatInput = () => {
     };
 
     const uploadMessageToUpstash = async () => {
-      const res = await fetch("/api/add-message", {
+      const data = await fetch("/api/add-message", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ message }),
-      });
+      }).then((res) => res.json());
 
-      const data = await res.json();
       return [data.message, ...(messages as Message[])];
     };
-
-    await mutate(uploadMessageToUpstash, {
-      optimisticData: [message, ...(messages as Message[])],
-      rollbackOnError: true,
-      populateCache: true,
-      revalidate: false,
-    });
+    try {
+      await mutate(uploadMessageToUpstash, {
+        optimisticData: [message, ...(messages as Message[])],
+        rollbackOnError: true,
+        populateCache: true,
+        revalidate: false,
+      });
+      console.log("error: ", error);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

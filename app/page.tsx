@@ -6,12 +6,10 @@ type Props = {};
 
 export default async function Home({}: Props) {
   const data = await fetch(
-    "https://mess-chat.vercel.app/api/get-messages"
+    `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/get-messages`
   ).then((res) => res.json());
 
-  console.log(data);
-  const messages: Message[] = data?.messages;
-  console.log(messages);
+  const messages: Message[] = data.messages;
 
   return (
     <main>
