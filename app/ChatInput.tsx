@@ -6,6 +6,7 @@ import { FormEvent, useState } from "react";
 import useSWR from "swr";
 import { v4 as uuid } from "uuid";
 import { useSession } from "next-auth/react";
+import { uploadMessageToUpstash } from "@/utils/uploadMessageToUpstash";
 
 const ChatInput = () => {
   const [input, setInput] = useState("");
@@ -36,19 +37,8 @@ const ChatInput = () => {
       email: session?.user?.email!,
     };
 
-    const uploadMessageToUpstash = async () => {
-      const data = await fetch("/api/add-message", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      }).then((res) => res.json());
-
-      return [data.message, ...(messages as Message[])];
-    };
     try {
-      await mutate(uploadMessageToUpstash, {
+      await mutate(() => uploadMessageToUpstash(message, messages!), {
         optimisticData: [message, ...(messages as Message[])],
         rollbackOnError: true,
         populateCache: true,
