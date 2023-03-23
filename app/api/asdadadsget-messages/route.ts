@@ -6,10 +6,8 @@ type Data = {
   messages: Message[];
 };
 
-export async function GET(req: Request) {
+export default async function GET(req: Request) {
   const messagesRes = await redis.hvals("messages");
-
-  console.log("redis messages: ", messagesRes);
 
   const messages: Message[] = messagesRes
     .map((message) => JSON.parse(message))
