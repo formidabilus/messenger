@@ -14,7 +14,7 @@ const Header = ({ session }: Props) => {
       <header className="sticky top-0 z-50 bg-white flex justify-between items-center p-10 shadow-sm">
         <div className="flex space-x-2">
           <Image
-            className="rounded-full mx-2 object-contain"
+            className="rounded-full mx-2"
             height={10}
             width={50}
             src={session?.user?.image as string}

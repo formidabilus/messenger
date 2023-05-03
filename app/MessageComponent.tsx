@@ -52,7 +52,7 @@ const MessageComponent = ({ message }: Props) => {
       </div>
     </div>
   ) : (
-    <p>NO MESSAGE</p>
+    <p>NO MESSAGES</p>
   );
 };
 
